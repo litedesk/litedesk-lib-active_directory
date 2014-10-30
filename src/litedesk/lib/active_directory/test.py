@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
 import os
-
+import random
+import unittest
 
 from session import Session
 from classes.base import Company, User
@@ -105,6 +105,13 @@ class UserTestCase(CommonTest):
         self.assertEqual(user.s_am_account_name, self.test_company.users[0].s_am_account_name)
         user.delete()
 
+    def test_user_is_activated_on_creation(self):
+        user = self.user_create()
+        user.save()
+        self.assertIsInstance(user, User)
+        self.assertTrue(user.is_activated, 'User is not activated')
+        user.delete()
+
     def test_user_search(self):
         user = self.user_create()
         user.save()
@@ -113,6 +120,22 @@ class UserTestCase(CommonTest):
             query='(&(sAMAccountName={0})(mail={1}))'.format(self.test_s_am_account_name, self.test_mail)
         )
         self.assertEqual(len(users), 1)
+        user.delete()
+
+    def test_user_edit(self):
+        NEW_USER_NAME = 'User %08d' % random.randint(0, 100000000)
+        user = self.user_create()
+        user.save()
+        user.given_name = NEW_USER_NAME
+        user.save()
+        users = User.search(
+            self.session,
+            query='(&(sAMAccountName={0})(givenName={1}))'.format(self.test_s_am_account_name, self.given_name)
+            )
+
+        self.assertEqual(len(users), 1)
+        updated_user = users[0]
+        self.assertEqual(updated_user.given_name, user.given_name)
         user.delete()
 
     def test_user_delete(self):

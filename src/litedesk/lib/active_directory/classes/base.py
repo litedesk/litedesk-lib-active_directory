@@ -254,6 +254,7 @@ class Company(BaseObject):
 
 
 class User(BaseObject):
+    USER_ACCOUNT_CONTROL_ACTIVE = '544'
 
     cn = BaseAttribute('cn')
     account_expires = BaseAttribute('accountExpires')
@@ -291,14 +292,18 @@ class User(BaseObject):
         'object_class': ['organizationalPerson', 'top', 'person', 'user'],
     }
 
+    @property
+    def is_activated(self):
+        return self.user_account_control == self.USER_ACCOUNT_CONTROL_ACTIVE
+
+    def activate(self):
+        self.user_account_control = self.USER_ACCOUNT_CONTROL_ACTIVE
+
     def save(self):
         if not self.distinguished_name:
             self.distinguished_name = 'CN={0},{1}'.format(
                 self.s_am_account_name,
                 self.parent.distinguished_name
             )
+        if not self.is_activated: self.activate()
         super(User, self).save()
-
-
-
-
