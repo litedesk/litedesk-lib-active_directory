@@ -130,7 +130,7 @@ class UserTestCase(CommonTest):
         user.save()
         users = User.search(
             self.session,
-            query='(&(sAMAccountName={0})(givenName={1}))'.format(self.test_s_am_account_name, self.given_name)
+            query='(&(sAMAccountName={0})(givenName={1}))'.format(self.test_s_am_account_name, user.given_name)
             )
 
         self.assertEqual(len(users), 1)
