@@ -125,6 +125,18 @@ class UserTestCase(CommonTest):
         )
         self.assertEqual(len(users), 0)
 
+    def test_user_modify(self):
+        user = self.user_create()
+        user.save()
+        user = User.search(
+            self.session,
+            query='(&(sAMAccountName={0})(mail={1}))'.format(self.test_s_am_account_name, self.test_mail)
+        )[0]
+        user.mail = 'test2.user@example.com'
+        user.save()
+        self.assertEqual(user.mail, 'test2.user@example.com')
+        user.delete()
+
 
 if __name__ == '__main__':
     unittest.main()
