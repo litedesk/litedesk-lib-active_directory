@@ -79,6 +79,13 @@ class BaseAttribute(property):
             pass
 
     def raw_set(self, instance, value, modified):
+        if isinstance(value, unicode):
+            value = value.encode()
+        elif isinstance(value, (list, tuple)):
+            value = [
+                item.encode() if isinstance(item, unicode) else item
+                for item in value
+            ]
         self.__values[instance] = {
             'value': value,
             'modified': modified
