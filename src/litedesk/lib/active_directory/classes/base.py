@@ -287,6 +287,8 @@ class BaseObject(object):
                     attr.getter(self) is not None
                 ):
                     self._raw_set(attr.name, attr.getter(self), True)
+        if not self._moddict:
+            return
         modlist = [
             (ad_key, value)
             for ad_key, value in self._moddict.viewitems()
