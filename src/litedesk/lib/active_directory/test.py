@@ -25,11 +25,17 @@ from classes.base import Company, User
 
 class CommonTest(unittest.TestCase):
 
-    def setUp(self):
-        self.url = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_URL']
-        self.dn = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_DN']
-        self.password = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_PASSWORD']
-        super(CommonTest, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        try:
+            cls.url = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_URL']
+            cls.dn = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_DN']
+            cls.password = os.environ['LITEDESK_LIB_ACTIVE_DIRECTORY_PASSWORD']
+        except KeyError:
+            raise Exception(
+                'This tests require environment variables (LITEDESK_LIB_ACTIVE_DIRECTORY_URL, '
+                'LITEDESK_LIB_ACTIVE_DIRECTORY_DN, LITEDESK_LIB_ACTIVE_DIRECTORY_PASSWORD) to be set.'
+            )
 
 
 class SessionTestCase(CommonTest):
