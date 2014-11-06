@@ -343,7 +343,7 @@ class Company(BaseObject):
 
 
 class User(BaseObject):
-    USER_ACCOUNT_CONTROL_ACTIVE = '544'
+    USER_ACCOUNT_CONTROL_ACTIVE = '66080'
 
     cn = ReadOnlyAttribute('cn')
     account_expires = BaseAttribute('accountExpires')
@@ -399,6 +399,9 @@ class User(BaseObject):
 
     def activate(self):
         self.user_account_control = self.USER_ACCOUNT_CONTROL_ACTIVE
+
+    def set_password(self, new, old=None):
+        self._session.passwd_s(self.distinguished_name, old, new)
 
     def save(self):
         if not self.distinguished_name:
