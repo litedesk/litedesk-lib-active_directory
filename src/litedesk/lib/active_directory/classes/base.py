@@ -312,6 +312,7 @@ class BaseObject(object):
 class Company(BaseObject):
 
     ou = BaseAttribute('ou')
+    group_policy_link = BaseAttribute('gPLink')
 
     _base_search_query = '''(&
         (objectClass=organizationalUnit)
@@ -371,6 +372,7 @@ class User(BaseObject):
     sn = BaseAttribute('sn')
     user_account_control = BaseAttribute('userAccountControl')
     user_principal_name = BaseAttribute('userPrincipalName')
+    lockout_time = BaseAttribute('lockoutTime')
 
     _base_search_query = '''(&
         (objectClass=organizationalPerson)
