@@ -41,7 +41,7 @@ class CommonTest(unittest.TestCase):
 class SessionTestCase(CommonTest):
 
     def test_session(self):
-        session = Session(self.url, self.dn, self.password)
+        session = Session(self.url, self.dn, self.password, insecure=True)
         self.assertIsInstance(session.whoami_s(), str)
 
 
@@ -49,7 +49,7 @@ class CompanyTestCase(CommonTest):
 
     def setUp(self):
         super(CompanyTestCase, self).setUp()
-        self.session = Session(self.url, self.dn, self.password)
+        self.session = Session(self.url, self.dn, self.password, insecure=True)
         self.test_ou = 'test_company'
 
     def test_create_company(self):
@@ -78,7 +78,7 @@ class UserTestCase(CommonTest):
 
     def setUp(self):
         super(UserTestCase, self).setUp()
-        self.session = Session(self.url, self.dn, self.password)
+        self.session = Session(self.url, self.dn, self.password, insecure=True)
         self.test_ou = 'test_company'
         self.test_company = Company(self.session, ou=self.test_ou)
         self.test_company.save()
@@ -164,6 +164,12 @@ class UserTestCase(CommonTest):
         user.mail = 'test2.user@example.com'
         user.save()
         self.assertEqual(user.mail, 'test2.user@example.com')
+        user.delete()
+
+    def test_user_set_password(self):
+        user = self.user_create()
+        user.save()
+        user.set_password('VeryStrongPassword1')
         user.delete()
 
 

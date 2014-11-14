@@ -46,16 +46,17 @@ class Session(object):
 
     def __enter__(self):
         """Initialize LDAP connection to the endpoint"""
+        if self.__insecure:
+            warnings.warn(
+                'Allowing LDAP over TLS without certificate verification'
+            )
+            ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, 0)
         self.__ldap = ldap.initialize(self.__url)
         self.__ldap.protocol_version = 3
         self.__ldap.set_option(ldap.OPT_REFERRALS, 0)
         self.__ldap.set_option(ldap.OPT_X_TLS_DEMAND, True)
         self.__ldap.set_option(ldap.OPT_DEBUG_LEVEL, 255)
-        if self.__insecure:
-            warnings.warn(
-                'Allowing LDAP over TLS without certificate verification'
-            )
-            self.__ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, 0)
+
         self.__ldap.simple_bind_s(self.__dn, self.__password)
         return self
 
