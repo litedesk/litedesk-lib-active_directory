@@ -178,10 +178,13 @@ class UserTestCase(CommonTest):
         user.set_password(self.test_password)
         encoded_password = utf_16_le_encode('"{0}"'.format(self.test_password))[0]
         encoded_password_2 = utf_16_le_encode('"{0}_2"'.format(self.test_password))[0]
-        self.session.modify_s(self.distinguished_name, [
+        self.session.modify_s(
+            user.distinguished_name,
+            [
             (ldap.MOD_DELETE, 'unicodePwd', encoded_password),
             (ldap.MOD_ADD, 'unicodePwd', encoded_password_2)
-        ])
+            ]
+        )
         user.delete()
 
 
