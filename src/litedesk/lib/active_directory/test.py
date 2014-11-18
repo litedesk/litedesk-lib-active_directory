@@ -174,9 +174,11 @@ class UserTestCase(CommonTest):
         user = self.user_create()
         user.save()
         user.set_password(self.test_password)
+        dn = 'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou)
+        print dn
         new_ldap = Session(
             self.url,
-            'cn={0},cn=Users,DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name),
+            'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou),
             self.password
         )
         time.sleep(5)
