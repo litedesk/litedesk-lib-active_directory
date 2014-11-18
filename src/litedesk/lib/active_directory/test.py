@@ -87,6 +87,7 @@ class UserTestCase(CommonTest):
         self.test_sn = 'User'
         self.test_mail = 'test.user@example.com'
         self.test_display_name = 'Test User'
+        self.test_password = 'VeryStrongPassword1'
 
     def tearDown(self):
         self.test_company.delete()
@@ -169,7 +170,12 @@ class UserTestCase(CommonTest):
     def test_user_set_password(self):
         user = self.user_create()
         user.save()
-        user.set_password('VeryStrongPassword1')
+        user.set_password(self.test_password)
+        new_ldap = Session(
+            self.url,
+            'cn={0},cn=Users,DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name),
+            self.password
+        )
         user.delete()
 
 
