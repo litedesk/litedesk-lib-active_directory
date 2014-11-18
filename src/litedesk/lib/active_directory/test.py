@@ -185,6 +185,13 @@ class UserTestCase(CommonTest):
             (ldap.MOD_ADD, 'unicodePwd', encoded_password_2)
             ]
         )
+        self.session.modify_s(
+            user.distinguished_name,
+            [
+            (ldap.MOD_DELETE, 'unicodePwd', encoded_password),
+            (ldap.MOD_ADD, 'unicodePwd', encoded_password_2)
+            ]
+        )
         user.delete()
 
 
