@@ -178,7 +178,10 @@ class UserTestCase(CommonTest):
         user.set_password(self.test_password)
         dn = 'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou)
         print dn
-        self.session.modify_s(self.distinguished_name, [(ldap.MOD_ADD, 'memberOf', 'CN=Users,CN=Builtin,DC=directory,DC=zeile12,DC=de')])
+        self.session.modify_s(
+            user.distinguished_name,
+            [(ldap.MOD_ADD, 'memberOf', 'CN=Users,CN=Builtin,DC=directory,DC=zeile12,DC=de')]
+        )
         new_ldap = Session(
             self.url,
             'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou),
