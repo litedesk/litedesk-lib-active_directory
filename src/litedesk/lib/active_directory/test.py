@@ -187,7 +187,6 @@ class UserTestCase(CommonTest):
             'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou),
             self.password
         )
-        time.sleep(5)
         print new_ldap.whoami_s()
         user.delete()
 

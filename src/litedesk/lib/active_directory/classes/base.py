@@ -361,6 +361,7 @@ class User(BaseObject):
     last_logon_timestamp = ReadOnlyAttribute('lastLogonTimestamp')
     logon_count = ReadOnlyAttribute('logonCount')
     mail = BaseAttribute('mail')
+    member_of = ReadOnlyAttribute('memberOf')
     object_sid = ReadOnlyAttribute('objectSid')
     primary_group_id = ReadOnlyAttribute('primaryGroupID')
     pwd_last_set = ReadOnlyAttribute('pwdLastSet')
