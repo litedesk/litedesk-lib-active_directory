@@ -91,6 +91,8 @@ class UserTestCase(CommonTest):
         self.test_password = 'VeryStrongPassword1'
 
     def tearDown(self):
+        for user in self.test_company.users:
+            user.delete()
         self.test_company.delete()
 
     def user_create(self):
