@@ -405,7 +405,7 @@ class User(BaseObject):
 
     def set_password(self, password):
         encoded_password = utf_16_le_encode('"{0}"'.format(password))[0]
-        self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'unicodePwd', encoded_password)])
+        self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'unicodePwd', '"{0}"'.format(password))])
 
     def save(self):
         if not self.distinguished_name:
