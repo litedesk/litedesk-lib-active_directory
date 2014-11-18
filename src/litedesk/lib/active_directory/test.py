@@ -176,6 +176,7 @@ class UserTestCase(CommonTest):
             'cn={0},cn=Users,DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name),
             self.password
         )
+        print new_ldap.whoami_s()
         user.delete()
 
 

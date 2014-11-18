@@ -19,8 +19,6 @@ import weakref
 from codecs import utf_16_le_encode
 
 import ldap
-from pyasn1.codec.ber.encoder import encode as ber_encode
-from pyasn1.type.univ import OctetString
 
 
 class _AttributeFactory(object):
@@ -406,8 +404,6 @@ class User(BaseObject):
         self.user_account_control = self.USER_ACCOUNT_CONTROL_ACTIVE
 
     def set_password(self, password):
-        #self._session.passwd_s(self.distinguished_name, old, new)
-        encoded_pasword = ber_encode(OctetString(utf_16_le_encode('"{0}"'.format(password))[0]))
         encoded_pasword = utf_16_le_encode('"{0}"'.format(password))[0]
         self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'unicodePwd', encoded_pasword)])
 
