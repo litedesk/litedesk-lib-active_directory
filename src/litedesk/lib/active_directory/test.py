@@ -18,7 +18,7 @@
 import os
 import random
 import unittest
-import time
+from codecs import utf_16_le_encode
 
 import ldap
 
@@ -176,18 +176,12 @@ class UserTestCase(CommonTest):
         user = self.user_create()
         user.save()
         user.set_password(self.test_password)
-        dn = 'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou)
-        print dn
-        self.session.modify_s(
-            'CN=Users,CN=Builtin,DC=directory,DC=zeile12,DC=de',
-            [(ldap.MOD_ADD, 'member', user.distinguished_name)]
-        )
-        new_ldap = Session(
-            self.url,
-            'cn={0},ou={1},DC=directory,DC=zeile12,DC=de'.format(user.s_am_account_name, self.test_company.ou),
-            self.password
-        )
-        print new_ldap.whoami_s()
+        encoded_password = utf_16_le_encode('"{0}"'.format(self.test_password))[0]
+        encoded_password_2 = utf_16_le_encode('"{0}_2"'.format(self.test_password))[0]
+        self._session.modify_s(self.distinguished_name, [
+            (ldap.MOD_DELETE, 'unicodePwd', encoded_password),
+            (ldap.MOD_ADD, 'unicodePwd', encoded_password_2)
+        ])
         user.delete()
 
 
