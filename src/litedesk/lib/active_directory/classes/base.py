@@ -345,7 +345,7 @@ class Company(BaseObject):
 
 
 class User(BaseObject):
-    INITIAL_ACCOUNT_CONTROL_VALUE = '66082'
+    INITIAL_ACCOUNT_CONTROL_VALUE = '544'
     USER_ACCOUNT_CONTROL_ACTIVE = '544'
 
     cn = ReadOnlyAttribute('cn')
