@@ -16,6 +16,8 @@
 # limitations under the License.
 
 import weakref
+import random
+import string
 from codecs import utf_16_le_encode
 
 import ldap
@@ -408,6 +410,17 @@ class User(BaseObject):
     def set_password(self, password):
         encoded_password = utf_16_le_encode('"{0}"'.format(password))[0]
         self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'unicodePwd', encoded_password)])
+        self.update_from_ad()
+
+    def set_one_time_password(self, password=None):
+        password = password or ''.join([
+            random.choice(string.ascii_letters + string.digits)
+            for n in xrange(8)
+        ])
+        self.set_password(password)
+        self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'pwdLastSet', 0)])
+        self.update_from_ad()
+        return password
 
     def save(self):
         if not self.distinguished_name:
