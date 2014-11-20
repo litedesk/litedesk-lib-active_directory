@@ -418,7 +418,7 @@ class User(BaseObject):
             for n in xrange(8)
         ])
         self.set_password(password)
-        self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'pwdLastSet', 0)])
+        self._session.modify_s(self.distinguished_name, [(ldap.MOD_REPLACE, 'pwdLastSet', '0')])
         self.update_from_ad()
         return password
 
