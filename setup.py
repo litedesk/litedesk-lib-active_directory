@@ -16,7 +16,7 @@
 # limitations under the License.
 
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 setup(name='litedesk-lib-active_directory',
@@ -25,10 +25,7 @@ setup(name='litedesk-lib-active_directory',
     author='Łukasz Biernot',
     author_email='lukasz.biernot@lgmail.com',
     url='http://laboratories.telekom.com',
-    packages=[
-        'litedesk.lib.active_directory',
-        'litedesk.lib.active_directory.classes',
-    ],
+    packages=find_packages(),
     package_dir={
         'litedesk.lib.active_directory': 'src/litedesk/lib/active_directory',
         'litedesk.lib.active_directory.classes': 'src/litedesk/lib/active_directory/classes',
